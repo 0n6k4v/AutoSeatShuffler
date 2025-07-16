@@ -1,4 +1,5 @@
 import React, { memo, useCallback, useMemo, useRef, useTransition, useEffect, useState } from 'react';
+// สมมติว่า Triangle component อยู่ในไฟล์แยก
 import Triangle from '../../Components/Triangle';
 
 // --- Constants ---
@@ -95,11 +96,9 @@ const useBounce = (startX, startY, size = 200, speed = 2, others = []) => {
                 const w = window.innerWidth - size;
                 const h = window.innerHeight - size;
 
-                // ขอบจอ
                 if (x + dx > w || x + dx < 0) direction.current.dx *= -1;
                 if (y + dy > h || y + dy < 0) direction.current.dy *= -1;
 
-                // ชนสามเหลี่ยมอื่น
                 for (const o of others) {
                     if (isCollide({ x: x + dx, y: y + dy, size }, o)) {
                         direction.current.dx *= -1;
@@ -122,7 +121,7 @@ const useBounce = (startX, startY, size = 200, speed = 2, others = []) => {
     return pos;
 };
 
-const AnimatedTriangle = memo(({ size, startX, startY, color, duration, others = [] }) => {
+const AnimatedTriangle = memo(({ size, startX, startY, duration, others = [] }) => {
     const pos = useBounce(startX, startY, size, 0.5, others);
     return (
         <div className="fixed pointer-events-none z-0" style={{
@@ -131,8 +130,8 @@ const AnimatedTriangle = memo(({ size, startX, startY, color, duration, others =
             width: size,
             height: size,
             transition: 'none',
-            opacity: 0.25, // จางลง
-            filter: 'blur(2px)', // เบลอ
+            opacity: 0.5, // เพิ่มความชัดเล็กน้อยเพื่อให้เห็นบนพื้นขาว
+            filter: 'blur(2px)',
         }}>
             <div style={{
                 width: '100%',
@@ -145,14 +144,14 @@ const AnimatedTriangle = memo(({ size, startX, startY, color, duration, others =
                     height="100%"
                     preserveAspectRatio="none"
                     style={{
-                        filter: `drop-shadow(0 0 32px #fff)`
+                        filter: `drop-shadow(0 0 15px rgba(0,0,0,0.1))` // เปลี่ยนเงาเป็นสีเทาจางๆ
                     }}
                 >
                     <polygon
                         points="50,0 0,100 100,100"
                         style={{
                             fill: 'transparent',
-                            stroke: '#fff',
+                            stroke: '#cccccc', // เปลี่ยนสีเส้นเป็นสีเทา
                             strokeWidth: 8,
                             vectorEffect: 'non-scaling-stroke'
                         }}
@@ -216,13 +215,11 @@ const SearchForm = memo(() => {
 
     const handleSubmit = useCallback(() => {
         startTransition(() => {
-            // Handle search logic here
             console.log('Search submitted:', inputRef.current?.value);
         });
     }, []);
 
     const handleAttach = useCallback(() => {
-        // Handle file attachment
         console.log('Attach file clicked');
     }, []);
 
@@ -234,7 +231,7 @@ const SearchForm = memo(() => {
 
     return (
         <div
-            className="bg-white/50 border border-yellow-400 rounded-lg p-2 text-left mb-6 shadow-md"
+            className="bg-white/50 border border-gray-300 rounded-lg p-2 text-left mb-6 shadow-md backdrop-blur-sm" // เปลี่ยน border และเพิ่ม backdrop-blur
             role="search"
             aria-label="Search form"
         >
@@ -284,18 +281,27 @@ const LandingWithTriangle = memo(() => {
     ], []);
 
     const triangleConfigs = [
-        { size: 288, startX: window.innerWidth * 0.8, startY: window.innerHeight * 0.8, color: 'rgba(255,255,255,0.4)', duration: 32 },
-        { size: 192, startX: window.innerWidth * 0.2, startY: window.innerHeight * 0.2, color: 'rgba(255,255,255,0.3)', duration: 28 },
-        { size: 144, startX: window.innerWidth * 0.6, startY: window.innerHeight * 0.4, color: 'rgba(255,255,255,0.2)', duration: 24 },
-        { size: 120, startX: window.innerWidth * 0.4, startY: window.innerHeight * 0.6, color: 'rgba(255,255,255,0.15)', duration: 20 },
-        { size: 96,  startX: window.innerWidth * 0.2, startY: window.innerHeight * 0.8, color: 'rgba(255,255,255,0.1)', duration: 16 },
+        { size: 288, startX: window.innerWidth * 0.8, startY: window.innerHeight * 0.8, duration: 32 },
+        { size: 192, startX: window.innerWidth * 0.2, startY: window.innerHeight * 0.2, duration: 28 },
+        { size: 144, startX: window.innerWidth * 0.6, startY: window.innerHeight * 0.4, duration: 24 },
+        { size: 120, startX: window.innerWidth * 0.4, startY: window.innerHeight * 0.6, duration: 20 },
+        { size: 96,  startX: window.innerWidth * 0.2, startY: window.innerHeight * 0.8, duration: 16 },
     ];
 
-    // others logic (optional: update for collision)
     const triangles = triangleConfigs.map((cfg, idx) => {
-        const others = triangleConfigs.filter((_, i) => i !== idx);
+        const others = triangleConfigs.filter((_, i) => i !== idx).map(c => ({...c, x: c.startX, y: c.startY}));
         return <AnimatedTriangle key={idx} {...cfg} others={others} />;
     });
+    
+    // NEW: Liquid Glass Background Style
+    const liquidGlassBackground = {
+        background: '#f9f9f9', // Fallback color
+        backgroundImage: `
+            radial-gradient(circle at 15% 50%, rgba(255, 255, 255, 0.8), transparent 40%),
+            radial-gradient(circle at 85% 30%, rgba(230, 230, 255, 0.7), transparent 40%),
+            radial-gradient(circle at 50% 90%, rgba(240, 240, 240, 0.6), transparent 50%)
+        `
+    };
 
     return (
         <>
@@ -307,8 +313,8 @@ const LandingWithTriangle = memo(() => {
             `}</style>
             
             <div
-                className="text-black min-h-screen font-sukhumvit relative"
-                style={{ background: 'radial-gradient(circle, #FFC600, #FFF200)' }}
+                className="text-black min-h-screen font-sukhumvit relative overflow-hidden" // เพิ่ม overflow-hidden
+                style={liquidGlassBackground} // ใช้สไตล์ใหม่
             >
                 {triangles}
 
@@ -316,7 +322,7 @@ const LandingWithTriangle = memo(() => {
                     <section className="max-w-4xl mx-auto">
                         <img
                             className="mx-auto mb-4"
-                            src="./src/assets/depa-black-logo.png"
+                            src="./src/assets/depa-logo.png"
                             alt="Depa Logo"
                             width={100}
                             height={50}
@@ -337,7 +343,7 @@ const LandingWithTriangle = memo(() => {
                                 button.variant === 'primary' ? (
                                     <button
                                         key={button.key}
-                                        className="bg-white text-black px-4 py-2 rounded-full flex items-center gap-2 font-medium transition-colors duration-150 shadow hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2"
+                                        className="bg-white text-black px-4 py-2 rounded-full flex items-center gap-2 font-medium transition-colors duration-150 shadow hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 border border-gray-200" // เพิ่ม border
                                         onClick={() => handleAction(button.key)}
                                     >
                                         <PlaceholderIcon /> {button.label}

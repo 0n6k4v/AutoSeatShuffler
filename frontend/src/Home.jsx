@@ -55,6 +55,9 @@ function Home() {
           <Link to="/landing-triangle">
             <button style={buttonStyle}>ธีมดำ - สามเหลี่ยม (Landing With Triangle)</button>
           </Link>
+          <Link to="/landing-triangle-white">
+            <button style={buttonStyle}>ธีมขาว - สามเหลี่ยม (Landing With Triangle White)</button>
+          </Link>
           <Link to="/build-tawicha">
             <button style={buttonStyle}>สร้างตาวิชา (Build Tawicha)</button>
           </Link>
@@ -63,6 +66,9 @@ function Home() {
           </Link>
           <Link to="/landing-triangle-yellow">
             <button style={buttonStyle}>ธีมเหลือง - สามเหลี่ยม (Landing With Triangle Yellow)</button>
+          </Link>
+          <Link to="/yellow">
+            <button style={buttonStyle}>ธีมเหลือง - วงล้อมหาสนุก (Yellow Theme)</button>
           </Link>
           <Link to="/tawicha">
             <button style={buttonStyle}>ตาวิชา (Tawicha)</button>
