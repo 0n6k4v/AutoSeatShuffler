@@ -10,6 +10,7 @@ import Tawicha from './Test/Utils/Tawicha'
 import RoundTableSeatPicker from './Test/Utils/RoundTableSeatPicker'
 import OwlYellow from './Test/Utils/OwlYellow'
 import Home from './Home'
+import HomePetch from './HomePetch'
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
       <Route path="/tawicha" element={<Tawicha />} />
       <Route path="/round-table-seat-picker" element={<RoundTableSeatPicker />} />
       <Route path="/owl-yellow" element={<OwlYellow />} />
+      <Route path="/homepetch/*" element={<HomePetch />} />
     </Routes>
   )
 }
