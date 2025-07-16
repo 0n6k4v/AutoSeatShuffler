@@ -325,87 +325,36 @@ const FlyingBird = memo(() => {
                 style={{ background: 'radial-gradient(circle, #FFC600, #FFF200)' }}
             >
                 {birds}
-
-                <header className="bg-white/20 backdrop-blur-md fixed top-0 left-0 right-0 z-50">
-                    <nav className="container mx-auto px-8 py-4 flex justify-between items-center">
-                        <div className="flex items-center gap-8">
-                            <div className="flex items-center gap-2">
-                                <img
-                                    src="./src/assets/depa-black-logo.png"
-                                    alt="Depa Logo"
-                                    width={80}
-                                    height={40}
-                                    loading="lazy"
-                                    decoding="async"
-                                />
-                            </div>
+<main className="relative z-10 min-h-screen flex flex-col items-center justify-center container mx-auto px-8 text-center">
+                <section className="max-w-4xl w-full flex flex-col items-center justify-center">
+                    <img
+                        className="mx-auto mb-4"
+                        src="./src/assets/depa-black-logo.png"
+                        alt="Depa Logo"
+                        width={200}
+                        height={100}
+                        loading="lazy"
+                        decoding="async"
+                    />
+                    <h1 className="text-5xl font-bold tracking-tight mb-4 text-gray-900">
+                        วงล้อมหาสนุก
+                    </h1>
+                    <div className="flex gap-8 mb-8">
+                        <div
+                            className="w-48 h-48 rounded-full bg-gradient-to-br from-[#FFF200] to-[#FFC600] shadow-xl flex items-center justify-center cursor-pointer transition hover:scale-110"
+                            onClick={() => window.location.href = '/homepetch'}
+                        >
+                            <span className="text-black font-bold text-xl font-playpen">วงกลม 1</span>
                         </div>
-                    </nav>
-                </header>
-
-                <main className="relative z-10 pt-48 pb-24 container mx-auto px-8 text-center">
-                    <section className="max-w-4xl mx-auto">
-                        <img
-                            className="mx-auto mb-4"
-                            src="./src/assets/depa-black-logo.png"
-                            alt="Depa Logo"
-                            width={100}
-                            height={50}
-                            loading="lazy"
-                            decoding="async"
-                        />
-                        <h1 className="text-4xl font-bold tracking-tight mb-4 text-gray-900">
-                            หน้าสุดท้าย สู่ก้าวใหม่
-                        </h1>
-                        <p className="text-xl text-gray-700 mb-8">
-                            ดูแผนผัง
-                        </p>
-
-                        <SearchForm />
-
-                        <div className="flex justify-center items-center gap-4 flex-wrap">
-                            {actionButtons.map((button) => (
-                                button.variant === 'primary' ? (
-                                    <button
-                                        key={button.key}
-                                        className="bg-white text-black px-4 py-2 rounded-full flex items-center gap-2 font-medium transition-colors duration-150 shadow hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2"
-                                        onClick={() => handleAction(button.key)}
-                                    >
-                                        <PlaceholderIcon /> {button.label}
-                                    </button>
-                                ) : (
-                                    <ActionButton
-                                        key={button.key}
-                                        icon={<PlaceholderIcon />}
-                                        onClick={() => handleAction(button.key)}
-                                    >
-                                        {button.label}
-                                    </ActionButton>
-                                )
-                            ))}
+                        <div
+                            className="w-48 h-48 rounded-full bg-gradient-to-br from-[#FFC600] to-[#FFF200] shadow-xl flex items-center justify-center cursor-pointer transition hover:scale-110"
+                            onClick={() => window.location.href = '/'}
+                        >
+                            <span className="text-black font-bold text-xl font-playpen">วงกลม 2</span>
                         </div>
-                    </section>
-
-                    <LogoSection />
-
-                    <section className="max-w-4xl mx-auto mt-48">
-                        <div className="flex justify-center mb-4">
-                            <div className="w-10 h-10 border-2 border-blue-500 rounded-full flex items-center justify-center font-bold text-blue-500">
-                                B
-                            </div>
-                        </div>
-                        <p className="text-blue-600 font-semibold mb-4">VISUAL DEVELOPMENT PLATFORM</p>
-                        <h2 className="text-5xl font-bold tracking-tight mb-6 text-gray-900">
-                            Bring the power of development to your entire team
-                        </h2>
-                        <p className="text-xl text-gray-700 max-w-2xl mx-auto">
-                            Let both developers and non-developers leverage your
-                            existing tech investments to iterate and ship faster
-                        </p>
-                    </section>
-
-                    <TableLayout />
-                </main>
+                    </div>
+                </section>
+            </main>
             </div>
         </>
     );

@@ -11,6 +11,8 @@ import RoundTableSeatPicker from './Test/Utils/RoundTableSeatPicker'
 import OwlYellow from './Test/Utils/OwlYellow'
 import Home from './Home'
 import HomePetch from './HomePetch'
+import LandingWithTriangleWhite from './Test/Pages/WhiteTheme/LandingWithTriangle'
+import YellowTheme from './Test/Pages/YellowTheme/yellow'
 
 function App() {
   return (
@@ -26,6 +28,8 @@ function App() {
       <Route path="/round-table-seat-picker" element={<RoundTableSeatPicker />} />
       <Route path="/owl-yellow" element={<OwlYellow />} />
       <Route path="/homepetch/*" element={<HomePetch />} />
+      <Route path="/landing-triangle-white" element={<LandingWithTriangleWhite />} />
+      <Route path="/yellow" element={<YellowTheme />} />
     </Routes>
   )
 }
