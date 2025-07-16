@@ -16,7 +16,7 @@ function MainPage() {
     setShowPopup(true);
     setTimeout(() => {
       setShowPopup(false);
-      navigate("homepetch/random");
+      navigate("/random");
     }, 1500); // แสดงป๊อปอัพ 1.5 วินาที
   };
 
