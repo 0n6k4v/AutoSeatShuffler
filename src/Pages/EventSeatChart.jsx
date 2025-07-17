@@ -9,6 +9,13 @@ import { saveSeat, getAllSeats, saveHistory, getAllHistory } from "../Storage/db
 
 const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
+function formatDateTime(isoString) {
+    const d = new Date(isoString);
+    if (isNaN(d)) return '-';
+    const pad = n => n.toString().padStart(2, '0');
+    return `${pad(d.getDate())}/${pad(d.getMonth() + 1)}/${d.getFullYear()} ${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())}`;
+}
+
 const useWindowSize = () => {
     const [size, setSize] = React.useState({ width: window.innerWidth, height: window.innerHeight });
     React.useEffect(() => {
@@ -43,9 +50,10 @@ const EventSeatChart = memo(() => {
     const [selectedTableId, setSelectedTableId] = useState(null);
     const [confirmedTableId, setConfirmedTableId] = useState(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const [tableSeats, setTableSeats] = useState(initialSeats);
+    const [tableSeats, setTableSeats] = useState(null); // เปลี่ยนเป็น null
     const [history, setHistory] = useState([]);
     const [isHistoryOpen, setIsHistoryOpen] = useState(false);
+    const [isLoadingSeats, setIsLoadingSeats] = useState(true);
 
     const [showHero, setShowHero] = useState(true);
     const [recentTables, setRecentTables] = useState([]); // เก็บโต๊ะที่เพิ่งถูกสุ่ม
@@ -162,7 +170,10 @@ const EventSeatChart = memo(() => {
         getAllSeats().then(seats => {
             if (seats.length > 0) {
                 setTableSeats(seats.map(s => s.count));
+            } else {
+                setTableSeats(initialSeats);
             }
+            setIsLoadingSeats(false);
         });
     }, []);
 
@@ -181,7 +192,7 @@ const EventSeatChart = memo(() => {
 
     const maxSeats = tableData.length * 10; // จำนวนสูงสุดของที่นั่งที่ว่าง
 
-    const remainingSeats = tableSeats.reduce((sum, seat) => sum + seat, 0);
+    const remainingSeats = tableSeats ? tableSeats.reduce((sum, seat) => sum + seat, 0) : 0;
 
     return (
         <div className="h-screen overflow-hidden flex flex-col" style={{ backgroundColor: '#020617' }}>
@@ -328,7 +339,7 @@ const EventSeatChart = memo(() => {
                                             history.map((item, idx) => (
                                                 <li key={idx} className="bg-white/5 hover:bg-white/10 rounded px-3 py-2 flex justify-between items-center text-sm transition-colors duration-150">
                                                     <span className="font-semibold">{item.label}</span>
-                                                    <span className="text-xs text-gray-300">{item.time}</span>
+                                                    <span className="text-xs text-gray-300">{formatDateTime(item.time)}</span>
                                                 </li>
                                             ))
                                         )}
@@ -347,20 +358,21 @@ const EventSeatChart = memo(() => {
 
              {/* --- ส่วนของแผนผังและปุ่มสุ่ม (เหมือนเดิม) --- */}
             <div className="relative flex-grow overflow-hidden" style={{ display: 'grid', placeItems: 'center' }}>
-                <div
-                    className="relative"
-                    style={{
-                        transform: 'translateY(-3vh) translateX(0)',
-                    }}
-                >
-                    <EventSeatPlan
-                        baseWidth={2400}
-                        baseHeight={1350}
-                        highlightedTableId={highlightedTableId}
-                        selectedTableId={selectedTableId}
-                        confirmedTableId={confirmedTableId}
-                        tableSeats={tableSeats} // <-- ใช้ข้อมูลจริง
-                    />
+                <div className="relative" style={{ transform: 'translateY(-3vh) translateX(0)' }}>
+                    {isLoadingSeats ? (
+                        <div className="flex items-center justify-center h-[400px]">
+                            <span className="text-white text-xl animate-pulse">กำลังโหลดข้อมูลที่นั่ง...</span>
+                        </div>
+                    ) : (
+                        <EventSeatPlan
+                            baseWidth={2400}
+                            baseHeight={1350}
+                            highlightedTableId={highlightedTableId}
+                            selectedTableId={selectedTableId}
+                            confirmedTableId={confirmedTableId}
+                            tableSeats={tableSeats}
+                        />
+                    )}
 
                     <div style={{
                         position: 'absolute',
