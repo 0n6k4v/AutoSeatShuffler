@@ -1,7 +1,11 @@
 import React, { useEffect } from "react";
 import confetti from "canvas-confetti";
+import { useLocation } from "react-router-dom";
 
 function Random() {
+  const location = useLocation();
+  const seat = location.state?.seat;
+
   useEffect(() => {
     // พลุจากซ้ายเต็มจอ
     confetti({
@@ -29,7 +33,8 @@ function Random() {
         >
           <span className="text-white font-extrabold text-6xl font-playpen drop-shadow-lg text-center tracking-wide leading-relaxed">
             ผลสุ่มที่นั่ง
-            <br />A-X
+            <br />
+            {seat ? `${seat.row}-${seat.col}` : "ไม่มีข้อมูล"}
           </span>
         </div>
       </div>

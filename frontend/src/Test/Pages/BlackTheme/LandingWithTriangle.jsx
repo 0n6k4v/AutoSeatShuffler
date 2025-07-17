@@ -1,224 +1,142 @@
-import React, { memo } from 'react';
+import React, { useMemo } from 'react';
+import { useNavigate } from 'react-router-dom';
 import AnimatedTriangle from '../../Components/AnimatedTriangle';
 
-const PlaceholderIcon = memo(({ className = 'w-6 h-6' }) => (
-    <svg
-        className={className}
-        viewBox="0 0 24 24"
-        fill="currentColor"
-        aria-hidden="true"
-        focusable="false"
-        xmlns="http://www.w3.org/2000/svg"
-    >
-        <path d="M0 0h24v24H0z" fill="none" />
-        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z" />
-    </svg>
-));
-
-const LOGOS = [
-    'zapier', 'J.CREW', "HARRY'S", 'serasa experian.', 'FAIRE',
-    'vistaprint', 'alo', 'afterpay', 'FABLETICS'
-];
-
-const ActionButton = memo(({ children, icon, ...props }) => (
-    <button
-        type="button"
-        className="bg-gray-800 text-gray-300 px-4 py-2 rounded-full flex items-center gap-2 hover:bg-gray-700 transition-colors duration-150"
-        {...props}
-    >
-        {icon}
-        {children}
-    </button>
-));
-
-// เพิ่ม component สำหรับโต๊ะ
-const tables = [
-    { id: 1, status: 'available' },
-    { id: 2, status: 'occupied' },
-    { id: 3, status: 'available' },
-    { id: 4, status: 'available' },
-    { id: 5, status: 'occupied' },
-    { id: 6, status: 'available' },
-    { id: 7, status: 'available' },
-    { id: 8, status: 'occupied' },
-];
-
-const TableIcon = ({ status }) => (
-    <div
-        className={`w-16 h-16 rounded-full flex items-center justify-center shadow-lg border-4
-            ${status === 'available' ? 'border-green-400 bg-green-900/30' : 'border-gray-400 bg-gray-700/30'}
-        `}
-    >
-        <svg width="32" height="32" fill="none" viewBox="0 0 32 32">
-            <circle cx="16" cy="16" r="14" stroke={status === 'available' ? '#22c55e' : '#a3a3a3'} strokeWidth="2" fill="white" />
-            <text x="16" y="21" textAnchor="middle" fontSize="14" fill={status === 'available' ? '#22c55e' : '#a3a3a3'}>
-                {status === 'available' ? 'ว่าง' : 'ไม่ว่าง'}
-            </text>
-        </svg>
-    </div>
+const ActionButton = React.memo(
+    React.forwardRef(function ActionButton({ children, icon, className = '', ...props }, ref) {
+        return (
+            <button
+                type="button"
+                className="
+                    text-black font-extrabold px-8 py-3 rounded-full flex items-center gap-3
+                    bg-gradient-to-r from-[#FFF200] to-[#FFC600]
+                    transition-all duration-300 ease-in-out
+                    shadow-lg
+                    hover:scale-105
+                    animate-pulse
+                "
+                {...props}
+                style={{
+                    boxShadow: '0 0 8px 2px #FFF20088, 0 2px 8px #FFC60088',
+                    textShadow: '0 2px 8px #FFF20088',
+                }}
+            >
+                {icon}
+                <span className="tracking-wider pt-1">{children}</span>
+            </button>
+        );
+    })
 );
 
-const triangleConfigs = [
-    { size: 288, left: window.innerWidth * 0.8, top: window.innerHeight * 0.8, color: '#FFF200', duration: 32 },
-    { size: 192, left: window.innerWidth * 0.2, top: window.innerHeight * 0.2, color: '#FFF200', duration: 28 },
-    { size: 144, left: window.innerWidth * 0.6, top: window.innerHeight * 0.4, color: '#FFF200', duration: 24 },
-    { size: 120, left: window.innerWidth * 0.4, top: window.innerHeight * 0.6, color: '#FFF200', duration: 20 },
-    { size: 96,  left: window.innerWidth * 0.2, top: window.innerHeight * 0.8, color: '#FFF200', duration: 16 },
-];
+// Responsive triangle configs using window size from a hook
+const useWindowSize = () => {
+    const [size, setSize] = React.useState({ width: window.innerWidth, height: window.innerHeight });
+    React.useEffect(() => {
+        const handleResize = () => setSize({ width: window.innerWidth, height: window.innerHeight });
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
+    return size;
+};
 
-const triangles = triangleConfigs.map((cfg, idx) => (
-    <AnimatedTriangle key={idx} {...cfg} />
-));
+const useTriangleConfigs = () => {
+    const { width, height } = useWindowSize();
+    return useMemo(() => [
+        { size: 288, left: width * 0.8, top: height * 0.8, color: '#A855F7', duration: 32, opacity: 0.6 },
+        { size: 192, left: width * 0.1, top: height * 0.2, color: '#4F46E5', duration: 28, opacity: 0.5 },
+        { size: 144, left: width * 0.6, top: height * 0.4, color: '#EC4899', duration: 24, opacity: 0.7 },
+        { size: 120, left: width * 0.4, top: height * 0.6, color: '#FFF',    duration: 20, opacity: 0.4 },
+        { size: 96,  left: width * 0.2, top: height * 0.8, color: '#6366F1', duration: 16, opacity: 0.8 },
+        { size: 60,  left: width * 0.9, top: height * 0.1, color: '#FFF',    duration: 35, opacity: 0.3 },
+    ], [width, height]);
+};
 
-const LandingWithTriangle = memo(() => (
-    <div
-        className="text-white min-h-screen font-sukhumvit relative"
-        style={{
-            background: `radial-gradient(ellipse at 70% 30%, rgba(2, 1, 37, 0.15), transparent 70%), 
-                                 radial-gradient(ellipse at 30% 30%, rgba(29, 78, 216, 0.15), transparent 70%),
-                                 #000`
-        }}
-    >
-        <style>{`
-            @keyframes spin {
-                0% { transform: rotate(0deg);}
-                100% { transform: rotate(360deg);}
-            }
-        `}</style>
+// Triangle animation keyframes (move to CSS for best practice)
+const triangleDriftNames = ['triangleDriftA', 'triangleDriftB', 'triangleDriftC'];
 
-        {/* สามเหลี่ยม background */}
-        {triangles}
+function LandingWithTriangle() {
+    const triangleConfigs = useTriangleConfigs();
+    const navigate = useNavigate();
 
-        <header className="bg-opacity-20 backdrop-blur-md">
-            <nav className="container mx-auto px-8 py-4 flex justify-between items-center">
-                <div className="flex items-center gap-8">
-                    <div className="flex items-center gap-2">
-                        <img
-                            src="./src/assets/depa-logo-white.png"
-                            alt="Depa Logo"
-                            width={80}
-                            loading="lazy"
-                            decoding="async"
-                            fetchpriority="low"
-                        />
-                    </div>
-                </div>
-            </nav>
-        </header>
-
-        <main className="pt-48 pb-24 container mx-auto px-8 text-center">
-            <section className="max-w-4xl mx-auto">
-                        <img
-                        className='item-center mx-auto mb-4'
-                            src="./src/assets/depa-logo-white.png"
-                            alt="Depa Logo"
-                            width={100}
-                            loading="lazy"
-                            decoding="async"
-                            fetchpriority="low"
-                        />
-                <h1 className="text-4xl font-bold tracking-tight mb-4">
-                    หน้าสุดท้าย สู่ก้าวใหม่
-                </h1>
-                <p className="text-xl text-gray-400 mb-8">
-                    ดูแผนผัง
-                </p>
-
-                <form
-                    className="bg-gray-900 border border-gray-700 rounded-lg p-2 text-left mb-6"
-                    autoComplete="off"
-                    aria-label="Fusion builder input"
+    // Memoize triangles for performance
+    const triangles = useMemo(
+        () => triangleConfigs.map((cfg, idx) => {
+            const driftName = triangleDriftNames[idx % triangleDriftNames.length];
+            return (
+                <div
+                    key={idx}
+                    style={{
+                        opacity: cfg.opacity,
+                        position: 'absolute',
+                        left: cfg.left,
+                        top: cfg.top,
+                        pointerEvents: 'none',
+                    }}
                 >
-                    <input
-                        type="text"
-                        placeholder="Ask Fusion to build an onboarding flow"
-                        className="bg-transparent w-full text-lg p-4 focus:outline-none"
-                        aria-label="Fusion builder prompt"
-                        autoCorrect="off"
-                        spellCheck="false"
+                    <AnimatedTriangle
+                        {...cfg}
+                        style={{
+                            filter: 'drop-shadow(0 2px 8px #FFF200)',
+                            animation: `${driftName} ${cfg.duration || 20}s ease-in-out infinite`,
+                        }}
                     />
-                    <div className="flex justify-between items-center p-2">
-                        <button
-                            type="button"
-                            className="flex items-center gap-2 text-sm text-gray-400 hover:text-white transition-colors duration-150"
-                            aria-label="Attach"
+                </div>
+            );
+        }),
+        [triangleConfigs]
+    );
+
+    return (
+        <div className="text-white min-h-screen relative overflow-hidden" style={{ backgroundColor: '#020617' }}>
+            {/* Move keyframes to CSS file for maintainability */}
+            <div
+                className="absolute top-0 left-0 w-full h-full animate-gradient-move"
+                style={{
+                    background:
+                        `radial-gradient(ellipse at 70% 30%, rgba(2, 1, 37, 0.15), transparent 70%), 
+                        radial-gradient(ellipse at 30% 30%, rgba(29, 78, 216, 0.15), transparent 70%),
+                        #000`,
+                    zIndex: 1,
+                }}
+            />
+
+            <div className="relative z-10 w-full h-full absolute top-0 left-0">
+                {triangles}
+            </div>
+            <main className="min-h-screen flex flex-col justify-center items-center relative z-20 p-2 sm:p-4">
+                <section className="w-full max-w-4xl mx-auto flex flex-col items-center space-y-4">
+                    <img
+                        src="/src/assets/depa-logo-white.png"
+                        alt="Depa Logo"
+                        width={100}
+                        style={{ maxWidth: '60vw', height: 'auto' }}
+                        loading="lazy"
+                        decoding="async"
+                        fetchpriority="low"
+                    />
+                    <h1 className="text-3xl sm:text-6xl font-extrabold tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-gray-200 to-gray-400 text-center">
+                        Event Seat Randomizer
+                    </h1>
+                    <p className="max-w-xs sm:max-w-xl text-base sm:text-lg text-gray-400 text-center">
+                        ระบบสุ่มที่นั่งสำหรับกิจกรรมและอีเวนต์
+                    </p>
+                    <div className="pt-2 flex justify-center">
+                        <ActionButton
+                            className={`
+                                min-w-[110px]
+                                text-[0.85rem]
+                                py-[0.38rem] px-[0.8rem]
+                                ${window.innerWidth < 640 ? 'text-[0.75rem] py-[0.32rem] px-[0.65rem]' : ''}
+                            `}
+                            onClick={() => navigate('/eventSeatChart')}
                         >
-                            <PlaceholderIcon className="w-4 h-4" /> Attach
-                        </button>
-                        <button
-                            type="submit"
-                            className="text-gray-500"
-                            aria-label="Submit"
-                        >
-                            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 10l7-7m0 0l7 7m-7-7v18" />
-                            </svg>
-                        </button>
+                            กดเพื่อสุ่มโต๊ะ
+                        </ActionButton>
                     </div>
-                </form>
+                </section>
+            </main>
+        </div>
+    );
+}
 
-                <div className="flex justify-center items-center gap-4 flex-wrap">
-                    <button className="bg-white text-black px-4 py-2 rounded-full flex items-center gap-2 font-medium transition-colors duration-150">
-                        <PlaceholderIcon /> Connect a repo
-                    </button>
-                    <ActionButton icon={<PlaceholderIcon />}>Figma Import</ActionButton>
-                    <ActionButton icon={<PlaceholderIcon />}>MCP Servers</ActionButton>
-                    <ActionButton icon={<PlaceholderIcon />}>Get Extension</ActionButton>
-                </div>
-            </section>
-
-            <section className="mt-32">
-                <div className="flex flex-wrap justify-center items-center gap-12 grayscale opacity-60">
-                    {LOGOS.map((logo) => (
-                        <p key={logo} className="font-bold text-2xl">{logo}</p>
-                    ))}
-                </div>
-            </section>
-
-            <section className="max-w-4xl mx-auto mt-48">
-                <div className="flex justify-center mb-4">
-                    <div className="w-10 h-10 border-2 border-blue-500 rounded-full flex items-center justify-center font-bold text-blue-500">
-                        B
-                    </div>
-                </div>
-                <p className="text-blue-500 font-semibold mb-4">VISUAL DEVELOPMENT PLATFORM</p>
-                <h2 className="text-5xl font-bold tracking-tight mb-6">
-                    Bring the power of development to your entire team
-                </h2>
-                <p className="text-xl text-gray-400 max-w-2xl mx-auto">
-                    Let both developers and non-developers leverage your
-                    existing tech investments to iterate and ship faster
-                </p>
-            </section>
-
-            <section className="max-w-3xl mx-auto mt-24 mb-24">
-                <h2 className="text-3xl font-bold mb-6 text-green-400">โต๊ะที่ว่างอยู่</h2>
-                <div className="relative w-[400px] h-[400px] mx-auto">
-                    {tables.map((table, idx) => {
-                        const angle = (2 * Math.PI * idx) / tables.length;
-                        const radius = 150;
-                        const x = Math.cos(angle) * radius + 170;
-                        const y = Math.sin(angle) * radius + 170;
-                        return (
-                            <div
-                                key={table.id}
-                                className="absolute"
-                                style={{ left: x, top: y }}
-                            >
-                                <TableIcon status={table.status} />
-                                <div className="text-center mt-2 text-lg font-semibold">
-                                    โต๊ะ {table.id}
-                                </div>
-                            </div>
-                        );
-                    })}
-                    <div className="absolute left-[150px] top-[150px] w-24 h-24 rounded-full bg-blue-900/40 flex items-center justify-center border-4 border-blue-400 text-xl font-bold">
-                        Round Table
-                    </div>
-                </div>
-            </section>
-        </main>
-    </div>
-));
-
-export default LandingWithTriangle;
+export default React.memo(LandingWithTriangle);

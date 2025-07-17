@@ -82,6 +82,9 @@ function Home() {
           <Link to="/homepetch">
             <button style={buttonStyle}>ไปหน้า HomePetch (Demo)</button>
           </Link>
+          <Link to="/seating-chart">
+            <button style={buttonStyle}>ไปหน้า Seating Chart (Demo)</button>
+          </Link>
         </div>
       </div>
     </div>

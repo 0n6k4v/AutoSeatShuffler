@@ -1,6 +1,4 @@
 import React, { memo, useCallback, useMemo, useRef, useTransition, useEffect, useState } from 'react';
-// สมมติว่า Triangle component อยู่ในไฟล์แยก
-import Triangle from '../../Components/Triangle';
 
 // --- Constants ---
 const LOGOS = [

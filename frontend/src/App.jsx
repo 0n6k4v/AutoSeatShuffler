@@ -13,6 +13,10 @@ import Home from './Home'
 import HomePetch from './HomePetch'
 import LandingWithTriangleWhite from './Test/Pages/WhiteTheme/LandingWithTriangle'
 import YellowTheme from './Test/Pages/YellowTheme/yellow'
+import SeatingChart from './Test/Pages/YellowTheme/SeatingChart'
+import EventSeatChart from './Test/Pages/BlackTheme/EventSeatChart'
+import LandingPage from './Test/Pages/PurpleTheme/LandingPage'
+import SeatAdminPage from './Test/Pages/BlackTheme/SeatAdminPage'
 
 function App() {
   return (
@@ -30,6 +34,10 @@ function App() {
       <Route path="/homepetch/*" element={<HomePetch />} />
       <Route path="/landing-triangle-white" element={<LandingWithTriangleWhite />} />
       <Route path="/yellow" element={<YellowTheme />} />
+      <Route path="/seating-chart" element={<SeatingChart />} />
+      <Route path='/eventSeatChart' element={<EventSeatChart />} />
+      <Route path='/LandingPage' element={<LandingPage />} />
+      <Route path='/Admin' element={<SeatAdminPage />} />
     </Routes>
   )
 }

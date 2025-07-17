@@ -1,4 +1,5 @@
 import React, { memo, useEffect, useState, useRef } from 'react';
+import { Link } from 'react-router-dom';
 
 // --- Animation Hook ---
 const useBounce = (startX, startY, size = 200, speed = 2, others = []) => {
@@ -75,7 +76,7 @@ const AnimatedTriangle = memo(({ size, startX, startY, duration }) => {
 });
 
 // --- Main Component ---
-const LandingWithTriangle = memo(() => {
+const LandingWithTriangle = memo(() => {    
     const triangleConfigs = [
         { size: 288, startX: window.innerWidth * 0.8, startY: window.innerHeight * 0.8, duration: 32 },
         { size: 192, startX: window.innerWidth * 0.2, startY: window.innerHeight * 0.2, duration: 28 },
@@ -99,54 +100,36 @@ const LandingWithTriangle = memo(() => {
             
             <div
                 className="text-black min-h-screen font-sukhumvit relative"
-                style={{ background: 'radial-gradient(circle, #FFC600, #FFF200)' }}
+                style={{ background: 'linear-gradient(#FFF200, #FFC600)' }}
             >
                 {triangles}
 
                 <main className="relative z-10 min-h-screen flex flex-col items-center justify-center container mx-auto px-8 text-center">
                     <section className="max-w-4xl w-full flex flex-col items-center justify-center">
                         <img
-                            className="mx-auto mb-4"
+                            className="mx-auto mb-3"
                             src="./src/assets/depa-black-logo.png"
                             alt="Depa Logo"
-                            width={300}
-                            height={150}
+                            width={200}
                             loading="lazy"
                             decoding="async"
                         />
-                        <h1 className="text-5xl font-bold tracking-tight mb-8 text-gray-900">
-                            วงล้อมหาสนุก
-                        </h1>
-                        <div className="flex gap-12 mb-12">
+                        {/* Liquid Glass Start Button */}
+                        <Link to="/seating-chart">
                             <button
-                                className="px-8 py-4 rounded-full flex items-center gap-4 font-bold text-2xl shadow-2xl transition-all duration-150
-                                bg-white/30 backdrop-blur-md border border-white/30
-                                hover:scale-110 hover:bg-white/50 hover:backdrop-blur-xl hover:border-yellow-300
-                                hover:shadow-[0_8px_32px_0_rgba(31,38,135,0.37)]"
+                                className="px-8 pt-4 pb-3 rounded-2xl font-semibold text-lg text-gray-900 shadow-lg backdrop-blur-md bg-white/30 border border-white/40 transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:bg-white/60 hover:border-yellow-400 hover:text-yellow-900"
                                 style={{
-                                    boxShadow: "0 8px 32px 0 rgba(31, 38, 135, 0.20)",
-                                    border: "1px solid rgba(255,255,255,0.18)",
-                                    background: "linear-gradient(135deg, #FFF20055 0%, #FFC60055 100%)",
+                                    boxShadow: '0 4px 32px 0 rgba(255, 198, 0, 0.15), 0 1.5px 4px 0 rgba(0,0,0,0.08)',
+                                    border: '1.5px solid rgba(255,255,255,0.35)',
+                                    background: 'linear-gradient(135deg, rgba(255,255,255,0.35) 0%, rgba(255,246,0,0.25) 100%)',
+                                    backdropFilter: 'blur(12px)',
+                                    WebkitBackdropFilter: 'blur(12px)',
+                                    transition: 'all 0.3s cubic-bezier(.4,2,.3,1)'
                                 }}
-                                onClick={() => window.location.href = '/homepetch'}
                             >
-                                <span className="font-playpen drop-shadow-lg">ไปยังหน้าสุ่ม</span>
+                                เข้าสู่เว็บไซต์
                             </button>
-                            <button
-                                className="px-8 py-4 rounded-full flex items-center gap-4 font-bold text-2xl shadow-2xl transition-all duration-150
-                                bg-white/30 backdrop-blur-md border border-white/30
-                                hover:scale-110 hover:bg-white/50 hover:backdrop-blur-xl hover:border-yellow-300
-                                hover:shadow-[0_8px_32px_0_rgba(31,38,135,0.37)]"
-                                style={{
-                                    boxShadow: "0 8px 32px 0 rgba(31, 38, 135, 0.20)",
-                                    border: "1px solid rgba(255,255,255,0.18)",
-                                    background: "linear-gradient(135deg, #FFC60055 0%, #FFF20055 100%)",
-                                }}
-                                onClick={() => window.location.href = '/'}
-                            >
-                                <span className="font-playpen drop-shadow-lg">ดูที่นั่ง</span>
-                            </button>
-                        </div>
+                        </Link>
                     </section>
                 </main> 
             </div>
