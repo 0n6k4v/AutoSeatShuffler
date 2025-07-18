@@ -298,7 +298,7 @@ const EventSeatChart = memo(() => {
                     </button>
                     <div className="flex-1 flex justify-center items-center">
                         <img
-                            src="/public/depa-logo-white.png"
+                            src="./depa-logo-white.png"
                             alt="Depa Logo"
                             style={{
                                 height: '48px',
@@ -413,7 +413,7 @@ const EventSeatChart = memo(() => {
                 <div className="fixed inset-0 flex items-center justify-center z-50 bg-black/60 backdrop-blur-md p-4">
                     <div className="animated-border-box rounded-2xl w-full max-w-lg">
                         <div className="bg-slate-900/95 rounded-[14px] p-10 sm:p-12 text-center text-white shadow-2xl">
-                            <img src="/src/assets/depa-logo-white.png" alt="Depa Logo" width={100} className="mx-auto mb-6" />
+                            <img src="./depa-logo-white.png" alt="Depa Logo" width={100} className="mx-auto mb-6" />
                             <h2 className="text-3xl sm:text-4xl font-bold mb-4">สุ่มครบทุกโต๊ะแล้ว!</h2>
                             <p className="mb-8 text-lg sm:text-xl text-gray-300">ขอให้มีความสุขกับกิจกรรม 🎉</p>
                             <button

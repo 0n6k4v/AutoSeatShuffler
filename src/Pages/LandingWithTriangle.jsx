@@ -106,7 +106,7 @@ function LandingPage() {
             <main className="min-h-screen flex flex-col justify-center items-center relative z-20 p-2 sm:p-4">
                 <section className="w-full max-w-4xl mx-auto flex flex-col items-center space-y-4">
                     <img
-                        src="/public/depa-logo-white.png"
+                        src="./depa-logo-white.png"
                         alt="Depa Logo"
                         width={100}
                         style={{ maxWidth: '60vw', height: 'auto' }}
