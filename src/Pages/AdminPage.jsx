@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useCallback } from "react";
 import { getAllSeats, saveSeat, clearSeats, clearHistory } from "../Storage/db";
 import { tableData, tableLabels, initialSeats } from "../Storage/EventSeatData";
+import { useNavigate } from "react-router-dom"; // เพิ่ม import
 
 const getInitialSeats = () =>
     tableData.map((t, idx) => ({
@@ -22,6 +23,7 @@ const mergeSeats = (data) =>
 const AdminPage = () => {
     const [seats, setSeats] = useState([]);
     const [toast, setToast] = useState(null);
+    const navigate = useNavigate(); // เพิ่ม useNavigate
 
     // Load seats from IndexedDB
     useEffect(() => {
@@ -52,6 +54,16 @@ const AdminPage = () => {
         });
     }, []);
 
+    // Save all handler
+    const handleSaveAll = useCallback(() => {
+        Promise.all(
+            seats.map((seat) => saveSeat({ id: seat.id, count: Number(seat.count) }))
+        ).then(() => {
+            setToast("บันทึกข้อมูลทั้งหมดสำเร็จ");
+            setTimeout(() => setToast(null), 1200);
+        });
+    }, [seats]);
+
     // Delete handler
     const handleDelete = useCallback((id) => {
         saveSeat({ id, count: 0 }).then(() => {
@@ -78,20 +90,46 @@ const AdminPage = () => {
     }, []);
 
     return (
-        <div className="p-8 bg-gray-900 min-h-screen text-white">
+        <div className="p-8 bg-gray-900 min-h-screen text-white relative">
+            {/* ปุ่มไปหน้า Home และ Chart */}
+            <div className="absolute top-8 right-8 flex gap-2 z-10">
+                <button
+                    type="button"
+                    className="admin-btn px-4 py-2 bg-gray-700 rounded font-bold"
+                    onClick={() => navigate('/')}
+                >
+                    หน้า Home
+                </button>
+                <button
+                    type="button"
+                    className="admin-btn px-4 py-2 bg-gray-700 rounded font-bold"
+                    onClick={() => navigate('/eventSeatChart')}
+                >
+                    หน้า Chart
+                </button>
+            </div>
             <h2 className="text-2xl font-bold mb-6">จัดการข้อมูลโต๊ะและที่นั่ง</h2>
             {toast && (
                 <div className="mb-4 px-4 py-2 bg-green-600 rounded text-center font-bold animate-pulse">
                     {toast}
                 </div>
             )}
-            <button
-                type="button"
-                className="admin-btn mb-4 px-4 py-2 bg-yellow-500 rounded font-bold"
-                onClick={handleReset}
-            >
-                รีเซ็ตข้อมูลเริ่มต้น
-            </button>
+            <div className="flex flex-wrap gap-2 mb-4">
+                <button
+                    type="button"
+                    className="admin-btn px-4 py-2 bg-yellow-500 rounded font-bold"
+                    onClick={handleReset}
+                >
+                    รีเซ็ตข้อมูลเริ่มต้น
+                </button>
+                <button
+                    type="button"
+                    className="admin-btn px-4 py-2 bg-blue-500 rounded font-bold"
+                    onClick={handleSaveAll}
+                >
+                    บันทึกทั้งหมด
+                </button>
+            </div>
             <style>{`
                 .admin-btn {
                     transition: transform 0.18s, box-shadow 0.18s;

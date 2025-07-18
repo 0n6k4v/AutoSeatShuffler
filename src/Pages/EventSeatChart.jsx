@@ -1,5 +1,5 @@
 import React, { memo, useMemo, useState, useCallback, useEffect, useRef } from "react";
-import { ArrowLeft, Dices, History } from 'lucide-react';
+import { ArrowLeft, Dices, History, Settings } from 'lucide-react'; // เปลี่ยน UserCog เป็น Settings
 import { tableData, tableLabels, initialSeats } from "../Storage/EventSeatData";
 import { useNavigate } from "react-router-dom";
 import EventSeatPlan from "./EventSeatPlan";
@@ -308,8 +308,10 @@ const EventSeatChart = memo(() => {
                             }}
                         />
                     </div>
-                    {/* ปุ่มประวัติ + Liquid Glass Effect */}
-                    <div className="relative" ref={historyRef}>
+                    {/* ปุ่ม admin และประวัติ + Liquid Glass Effect */}
+                    <div className="relative flex items-center gap-2" ref={historyRef}>
+                        
+                        {/* ปุ่มประวัติ */}
                         <button
                             className="liquid-glass-btn flex items-center justify-center rounded-full p-2 shadow"
                             onClick={() => setIsHistoryOpen(prev => !prev)}
@@ -320,7 +322,7 @@ const EventSeatChart = memo(() => {
 
                         {/* Liquid Glass Dropdown */}
                         {isHistoryOpen && (
-                             <div
+                            <div
                                 className="absolute top-full right-0 mt-2 w-64 rounded-xl shadow-lg z-50 overflow-hidden"
                                 style={{
                                     background: "rgba(25, 28, 44, 0.6)",

@@ -1,6 +1,7 @@
 import React, { useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import AnimatedTriangle from '../Components/AnimatedTriangle';
+import { Settings } from 'lucide-react'; // เพิ่ม import
 
 const ActionButton = React.memo(
     React.forwardRef(function ActionButton({ children, icon, className = '', ...props }, ref) {
@@ -88,6 +89,20 @@ function LandingPage() {
 
     return (
         <div className="text-white min-h-screen relative overflow-hidden" style={{ backgroundColor: '#020617' }}>
+            {/* ปุ่มตั้งค่า (Settings) มุมขวาบน */}
+            <button
+                className="liquid-glass-btn flex items-center justify-center rounded-full p-2 shadow absolute top-6 right-6 z-30"
+                onClick={() => navigate('/admin')}
+                aria-label="ตั้งค่า"
+                style={{
+                    background: 'rgba(255,255,255,0.12)',
+                    backdropFilter: 'blur(8px)',
+                    WebkitBackdropFilter: 'blur(8px)',
+                    border: '1.5px solid rgba(255,255,255,0.18)',
+                }}
+            >
+                <Settings className="w-7 h-7 text-white" />
+            </button>
             {/* Move keyframes to CSS file for maintainability */}
             <div
                 className="absolute top-0 left-0 w-full h-full animate-gradient-move"
@@ -114,7 +129,7 @@ function LandingPage() {
                         decoding="async"
                         fetchpriority="low"
                     />
-                    <h1 className="text-3xl sm:text-6xl font-extrabold py-2 text-transparent bg-clip-text bg-gradient-to-r from-gray-200 to-gray-400 text-center">
+                    <h1 className="text-3xl sm:text-6xl font-extrabold py-2 text-white text-center w-fit mx-auto leading-tight">
                         หน้าสุดท้าย สู่ก้าวใหม่
                     </h1>
                     <p className="max-w-xs sm:max-w-xl text-base sm:text-lg text-gray-400 text-center">
