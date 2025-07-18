@@ -298,7 +298,7 @@ const EventSeatChart = memo(() => {
                     </button>
                     <div className="flex-1 flex justify-center items-center">
                         <img
-                            src="/src/assets/depa-logo-white.png"
+                            src="/public/depa-logo-white.png"
                             alt="Depa Logo"
                             style={{
                                 height: '48px',
